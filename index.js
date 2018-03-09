@@ -14,8 +14,6 @@ restService.use(bodyParser.json());
 
 
 restService.post('/age', function(req, res) {
-   // var speech = req.body.result && req.body.result.parameters && req.body.result.parameters.name ? req.body.result.parameters.name : "100"  *
-//let firstName = req.body.result && req.body.result.parameters && req.body.result.parameters.firstname;
 
 //var name=req.body.result && req.body.result.parameters && req.body.result.parameters.name;
    var date=req.body.result && req.body.result.parameters && req.body.result.parameters.date;
@@ -53,7 +51,7 @@ restService.post('/weather', function(req, res) {
 
     if (req.body.result.action === 'weather') {
     let city = req.body.result.parameters['geo-city'];
-    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID='+0c919df47b7fc6caa7eeb8161b2071ac+'&q='+city;
+    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID='+###+'&q='+city;
 
     request.get(restUrl, (err, response, body) => {
       if (!err && response.statusCode == 200) {
@@ -71,6 +69,27 @@ restService.post('/weather', function(req, res) {
       }})
   }
 
+restService.post('/testing', function(req, res) {
+
+    if (req.body.result.action === 'testing') {
+    let city = req.body.result.parameters['geo-city'];
+    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID='+###+'&q='+city;
+
+    request.get(restUrl, (err, response, body) => {
+      if (!err && response.statusCode == 200) {
+        let json = JSON.parse(body);
+        let msg = json.weather[0].description + ' and the temperature is ' + json.main.temp + ' ℉';
+        return res.json({
+          speech: msg,
+          displayText: msg,
+          source: 'tESt'});
+      } else {
+        return res.status(400).json({
+          status: {
+            code: 400,
+            errorType: 'Error.'}});
+      }})
+  }
 
 restService.listen((process.env.PORT || 8000), function() {
     console.log("Server up and listening");
